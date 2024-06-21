@@ -1,19 +1,22 @@
-from flask import Flask,redirect, url_for
+from flask import Flask,redirect, url_for, render_template
 
 app = Flask(__name__)
 
+#provided two path options to home page
 @app.route("/")
 @app.route("/home")
 def home():
-    return("Hello this is a main page <h1>HELLO This is a first heading<h1>")
+    return render_template("home.html")
 
+#path with variable
 @app.route("/welcome/<name>")
-def user(name):
+def welcome(name):
     return f"<h1>HELLO {name}! you're wellcome to this page.<h1>"
 
+#redirecting new user to welcome page
 @app.route("/newuser")
 def newuser():
-    return redirect(url_for("home"))
+    return redirect(url_for("welcome",name="newuser"))
 
 if __name__ == "__main__":
     print("Starting the flask application")
