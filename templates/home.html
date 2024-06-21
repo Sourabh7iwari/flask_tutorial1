@@ -5,8 +5,12 @@
     home Page
 </title>
 <body>
-    <h1>greeting </h1>
-    <p>hello</p>
+    <h1>home page </h1>
+    {% for x in range(10)%}
+        {% if x%2==1 %}
+            <p>{{x}}</p>
+        {% endif %}
+    {% endfor %}
 </body>
 <head>        
 <html>

@@ -14,8 +14,8 @@ def welcome(name):
     return f"<h1>HELLO {name}! you're wellcome to this page.<h1>"
 
 #redirecting new user to welcome page
-@app.route("/newuser")
-def newuser():
+@app.route("/<newuser>")
+def newuser(newuser):
     return redirect(url_for("welcome",name="newuser"))
 
 if __name__ == "__main__":
