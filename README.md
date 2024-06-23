@@ -1,3 +1,5 @@
-# Flash Tutorial
+## Flash Tutorial
+<br>
+This repository is made to learn Flask Python web development.
 
-A repo to learn flash development.
+
