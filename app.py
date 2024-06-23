@@ -1,4 +1,4 @@
-from flask import Flask,redirect, url_for, render_template
+from flask import Flask,redirect, url_for, render_template, request
 
 app = Flask(__name__)
 
@@ -7,6 +7,19 @@ app = Flask(__name__)
 @app.route("/home")
 def home():
     return render_template("home.html")
+
+
+#Post and get method implementation
+@app.route("/login", methods = ["POST","GET"])
+def login():
+    #after submitting if http method is post, then redirect to welcome page
+    if request.method=="POST":
+        user = request.form["nm"]
+        return redirect(url_for("welcome",name=user))
+    #if http method is get then render the login page.
+    else:
+        return render_template("login.html")
+
 
 #page for showing python script in html with iteratable variables
 @app.route("/py")
