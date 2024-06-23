@@ -1,4 +1,4 @@
-from flask import Flask,redirect, url_for, render_template, request, session
+from flask import Flask,redirect, url_for, render_template, request, session, flash
 from datetime import timedelta
 
 
@@ -22,14 +22,17 @@ def login():
         session.permanent = True
         user = request.form["nm"]
         session["user"] = user
+        flash("You logged in succesfully!","info")
         return redirect(url_for("welcome"))
     
     #if http method is get and user is in session then render welcome page.
     else:
         if "user" in session:
+            flash("You are already logged in!")
             return redirect(url_for("welcome"))
         #other wise show login page
-        return render_template("login.html")
+        else:
+            return render_template("login.html")
 
 
 #page for showing python script in html with iteratable variables
@@ -39,18 +42,19 @@ def iterate():
 
 
 #path with variable
-@app.route("/welcome/user")
+@app.route("/user")
 def welcome():
     if "user" in session:
         user = session["user"]
-        return f"<h1>HELLO {user}! you're wellcome to this page.<h1>"
+        return render_template("welcome.html",user=user)
     else:
         return redirect(url_for("login"))
 
 #redirecting new user to welcome page
 @app.route("/logout")
-def newuser():
+def logout():
     session.pop("user",None)
+    flash("You have been logout", "info")
     return redirect(url_for("login"))
 
 
