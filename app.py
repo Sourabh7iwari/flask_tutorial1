@@ -15,6 +15,7 @@ app.config["SQLALCMEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
+#creating user model for db
 class users(db.Model):
     _id = db.Column("id",db.Integer,primary_key = True)
     name = db.Column(db.String(100))
@@ -42,6 +43,16 @@ def login():
         session.permanent = True
         user = request.form["nm"]
         session["user"] = user
+
+        found_user = users.query.filter_by(name = user).first()
+
+        if found_user:
+            session["email"] = found_user.email
+        else:
+            usr = users(user,"")
+            db.session.add(usr)
+            db.session.commit()
+
         flash("You logged in succesfully!","info")
         return redirect(url_for("welcome"))
     
@@ -56,9 +67,9 @@ def login():
 
 
 #page for showing python script in html with iteratable variables
-@app.route("/py")
+@app.route("/view")
 def iterate():
-    return render_template("iterate.html",content=["sourabh","billu","ani"])
+    return render_template("view.html", values=users.query.all())
 
 
 #path with variable
@@ -71,6 +82,9 @@ def welcome():
         if request.method=="POST":
             email = request.form["email"]
             session["email"] = email
+            found_user = users.query.filter_by(name = user).first()
+            found_user.email = email
+            db.session.commit()
             flash("Email saved!")
         
         else:
