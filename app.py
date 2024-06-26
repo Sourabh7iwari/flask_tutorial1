@@ -1,9 +1,11 @@
 from flask import Flask,redirect, url_for, render_template, request, session, flash
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
+from features import feature
 
 #initiating flash app
 app = Flask(__name__)
+app.register_blueprint(feature, url_prefix= "/feature")
 
 #defining the key for data encryption
 app.secret_key="encrypt"
@@ -65,12 +67,11 @@ def login():
         else:
             return render_template("login.html")
 
-
 #page for showing python script in html with iteratable variables
-@app.route("/view")
+'''@feature.route('/view')
 def iterate():
     return render_template("view.html", values=users.query.all())
-
+'''
 
 #path with variable
 @app.route("/user", methods=["POST","GET"])
@@ -94,6 +95,7 @@ def welcome():
     else:
         flash("You are not logged in!")
         return redirect(url_for("login"))
+
 
 #redirecting new user to welcome page
 @app.route("/logout")
